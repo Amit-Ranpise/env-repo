@@ -1,1 +1,33 @@
+name: Multi stage env
+on:
+  workflow_dispatch:
+jobs:
+  DEV:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a sript
+        run: |
+          echo "I am rumming a job in the DEV environment"
+        
+  QA:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: DEV
+    steps:
+        - uses: actions/checkout@v2
+        - name: Run a sript
+          run: |
+            echo "I am rumming a job in the QA environment"
+  PROD:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: QA
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a sript
+      run: |
+        echo "I am rumming a job in the PROD environment"
+
 
